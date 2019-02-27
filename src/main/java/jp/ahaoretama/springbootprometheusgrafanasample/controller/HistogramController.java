@@ -27,6 +27,7 @@ public class HistogramController {
     private MeterRegistry register;
 
     static DistributionSummary EVENTS_LATENCY;
+    static DistributionSummary EVENTS_LATENCY_2;
 
     @PostConstruct
     public void init() {
@@ -34,6 +35,13 @@ public class HistogramController {
                 .builder("his_kafka_topics_requests_latency_seconds")
                 .description("Request latency in seconds.")
                 .tag("topicPair", "hs360_tx_in_done_vs_hs360pf_scoring_done")
+                .sla(200, 400, 600)
+                .register(register);
+
+        EVENTS_LATENCY_2 = DistributionSummary
+                .builder("his_kafka_topics_requests_latency_seconds")
+                .description("Request latency in seconds.")
+                .tag("topicPair", "hs360_screening_needed_vs_hs360_screening_done")
                 .sla(200, 400, 600)
                 .register(register);
     }
@@ -44,6 +52,7 @@ public class HistogramController {
         final double l = generateLatency();
         System.out.println(l);
         EVENTS_LATENCY.record(l);
+        EVENTS_LATENCY_2.record(l/2);
 
         return "bye";
     }
