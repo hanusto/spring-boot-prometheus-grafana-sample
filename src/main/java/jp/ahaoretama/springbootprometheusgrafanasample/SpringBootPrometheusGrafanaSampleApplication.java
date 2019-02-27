@@ -22,6 +22,6 @@ public class SpringBootPrometheusGrafanaSampleApplication {
 
 	@Bean
 	public MeterRegistryCustomizer<MeterRegistry> metricsCommonTags() {
-		return registry -> registry.config().commonTags("app", appName, "instance", instance);
+		return registry -> registry.config().commonTags("springAppName", appName, "springAppInstanceId", instance);
 	}
 }
